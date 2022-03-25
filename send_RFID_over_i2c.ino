@@ -3,7 +3,7 @@
 
 // #define Wire Wire1 // use this to specifty a different i2c bus - For example: #define Wire Wire1 means that we are using bus 1 instead of bus 0 as default.
 
-struct rfidStatus
+struct rfidStatus  // to keep the details of each card in
 {
   unsigned long ID = 0;
   int state = 0;
@@ -65,11 +65,10 @@ void loop() {
 void requestEvent() {
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++){
     if(readers[reader].state == true){
-      String cardNo = String(readers[reader].ID);
-      Wire.write(cardNo.c_str());
+      String cardNo = String(readers[reader].ID); //convert the card number to a string so that we can then convert it to a char*
+      Wire.write(cardNo.c_str()); // Wire.write only accepts char* so we need to cast the string so that Wire.write will accept it and send it
     }else{
-      Wire.write("no card"); // respond with message of 6 bytes
-  // as expected by master
+      Wire.write("no card");
     }
   }
 }
